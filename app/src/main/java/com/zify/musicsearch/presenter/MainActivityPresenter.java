@@ -8,6 +8,7 @@ import com.zify.musicsearch.contract.MainActivityContract;
 import com.zify.musicsearch.model.Artist;
 import com.zify.musicsearch.model.ArtistSearchResponse;
 import com.zify.musicsearch.model.MainActivityModel;
+import com.zify.musicsearch.utils.Constants;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -44,7 +45,8 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
 
     @Override
     public void fetchDataFromService() {
-        String url = "http://ws.audioscrobbler.com/2.0/?method=artist.search&artist=cher&api_key=fa2e62987b8c372e16daa60331164d12&format=json";
+        //String url = "http://ws.audioscrobbler.com/2.0/?method=artist.search&artist=cher&api_key=fa2e62987b8c372e16daa60331164d12&format=json";
+        String url = Constants.ARTIST_SEARCH_ENDPINT_URL+"cher&api_key="+Constants.API_KEY + "&format=json";
         LoadMusicData mLoadMusicData = new LoadMusicData(url,this, mView);
         mLoadMusicData.execute();
     }

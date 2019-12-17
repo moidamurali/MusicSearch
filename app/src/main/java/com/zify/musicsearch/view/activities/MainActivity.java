@@ -1,4 +1,4 @@
-package com.zify.musicsearch.view;
+package com.zify.musicsearch.view.activities;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -18,6 +18,7 @@ import com.zify.musicsearch.R;
 import com.zify.musicsearch.contract.MainActivityContract;
 import com.zify.musicsearch.model.Artist;
 import com.zify.musicsearch.presenter.MainActivityPresenter;
+import com.zify.musicsearch.view.RecyclerItemClickListener;
 import com.zify.musicsearch.view.adapter.SearchListAdapter;
 
 import java.util.List;
@@ -62,8 +63,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         relativeLayout.setGravity(Gravity.CENTER);
         relativeLayout.addView(progressBar);
 
-        RelativeLayout.LayoutParams params = new
-                RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         progressBar.setVisibility(View.INVISIBLE);
 
         this.addContentView(relativeLayout, params);
@@ -90,9 +90,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
     @Override
     public void onResponseFailure(Throwable throwable) {
-        Toast.makeText(MainActivity.this,
-                "Something went wrong...Error message: " + throwable.getMessage(),
-                Toast.LENGTH_LONG).show();
+        Toast.makeText(MainActivity.this, "Please try again after some time " + throwable.getMessage(), Toast.LENGTH_LONG).show();
     }
 
     /**
