@@ -1,6 +1,6 @@
 package com.zify.musicsearch.presenter;
 
-public interface Presenter {
+public interface BasePresenter {
 
     void onClick(android.view.View view);
     void fetchDataFromService();

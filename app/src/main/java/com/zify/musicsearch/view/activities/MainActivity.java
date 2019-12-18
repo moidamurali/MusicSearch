@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.zify.musicsearch.R;
 import com.zify.musicsearch.contract.MainContract;
 import com.zify.musicsearch.model.Artist;
-import com.zify.musicsearch.presenter.MainActivityPresenter;
-import com.zify.musicsearch.presenter.Presenter;
+import com.zify.musicsearch.presenter.MainPresenter;
+import com.zify.musicsearch.presenter.BasePresenter;
 import com.zify.musicsearch.view.adapter.SearchListAdapter;
 
 import java.util.List;
@@ -24,14 +24,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.Sear
 
     private EditText mSearcEditText;
     private RecyclerView mRecyclerView;
-    private Presenter mPresenter;
+    private BasePresenter mPresenter;
     private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mPresenter = new MainActivityPresenter(this);
+        mPresenter = new MainPresenter(this);
         dialog = new ProgressDialog(this);
         mPresenter.fetchDataFromService();
         initProgressBar();

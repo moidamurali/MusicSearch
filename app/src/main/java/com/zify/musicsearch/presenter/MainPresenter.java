@@ -23,12 +23,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-public class MainActivityPresenter implements Presenter {
+public class MainPresenter implements BasePresenter {
 
     private static MainContract.SearchView mView;
     private MainContract.Model mModel;
 
-    public MainActivityPresenter(MainContract.SearchView view) {
+    public MainPresenter(MainContract.SearchView view) {
         mView = view;
         initPresenter();
     }
@@ -58,13 +58,13 @@ public class MainActivityPresenter implements Presenter {
         public static final int STATE_LOADING=1;
         public static final int STATE_EMPTY=2;
         public static final int STATE_SHOW_ARTICLE=3;
-        private final Presenter presenter;
+        private final BasePresenter presenter;
         private final MainContract.SearchView view;
         private String endpointURL;
         boolean networkStatus;
         final String fileName = "SearchMusic.json";
 
-        public LoadMusicData(String URL, Presenter presenter, MainContract.SearchView view, boolean internetStatus){
+        public LoadMusicData(String URL, BasePresenter presenter, MainContract.SearchView view, boolean internetStatus){
             this.presenter = presenter;
             this.view=view;
             this.endpointURL=URL;
