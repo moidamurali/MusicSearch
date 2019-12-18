@@ -23,6 +23,8 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 public class DetailsPresenter implements BasePresenter {
 
@@ -48,10 +50,16 @@ public class DetailsPresenter implements BasePresenter {
 
     @Override
     public void fetchDataFromService(String selectedArtist) {
-        String url = Utils.ARTIST_INFO_ENDPINT_URL + selectedArtist +"&api_key="+ Utils.API_KEY + "&format=json";
-        boolean networkStatus = Utils.checkConnection(MusicSearchApplication.getAppContext());
-        LoadArtistDetails mLoadArtistDetails = new LoadArtistDetails(url,this, mView, networkStatus);
-        mLoadArtistDetails.execute();
+        try {
+            String query = URLEncoder.encode(selectedArtist, "utf-8");
+            String url = Utils.ARTIST_INFO_ENDPINT_URL + query +"&api_key="+ Utils.API_KEY + "&format=json";
+            boolean networkStatus = Utils.checkConnection(MusicSearchApplication.getAppContext());
+            LoadArtistDetails mLoadArtistDetails = new LoadArtistDetails(url,this, mView, networkStatus);
+            mLoadArtistDetails.execute();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
     }
 
 

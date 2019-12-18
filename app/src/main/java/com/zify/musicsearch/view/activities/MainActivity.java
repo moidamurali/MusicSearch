@@ -17,7 +17,6 @@ import com.zify.musicsearch.contract.MainContract;
 import com.zify.musicsearch.model.Artist;
 import com.zify.musicsearch.presenter.BasePresenter;
 import com.zify.musicsearch.presenter.MainPresenter;
-import com.zify.musicsearch.utils.Utils;
 import com.zify.musicsearch.view.adapter.SearchListAdapter;
 
 import java.util.List;

@@ -26,7 +26,7 @@ public class DetailsActivity  extends Activity implements DetailsView {
     private TextView artistBioData;
     private ImageView artistImage;
     private String artName;
-    private ProgressDialog dialog;
+    private ProgressDialog mDialog;
     private BasePresenter mPresenter;
 
     @Override
@@ -50,7 +50,7 @@ public class DetailsActivity  extends Activity implements DetailsView {
         artistName = (TextView)findViewById(R.id.tv_name);
         artistBioData = (TextView) findViewById(R.id.tv_bio_data);
         artistSummary = (TextView)findViewById(R.id.tv_summary);
-        dialog = new ProgressDialog(this);
+        mDialog = null;
         initProgressBar();
     }
 
@@ -58,8 +58,8 @@ public class DetailsActivity  extends Activity implements DetailsView {
      * Initializing progress dialog
      * */
     private void initProgressBar() {
-
-        dialog.setMessage("Downloading data, please wait....");
+        mDialog = new ProgressDialog(this);
+        mDialog.setMessage("Downloading data, please wait....");
     }
 
     @Override
@@ -90,13 +90,13 @@ public class DetailsActivity  extends Activity implements DetailsView {
 
     @Override
     public void showProgress() {
-        dialog.show();
+        mDialog.show();
     }
 
     @Override
     public void hideProgress() {
-        if (dialog.isShowing()) {
-            dialog.dismiss();
+        if (mDialog.isShowing()) {
+            mDialog.dismiss();
         }
     }
 
@@ -108,4 +108,9 @@ public class DetailsActivity  extends Activity implements DetailsView {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mDialog.dismiss();
+    }
 }

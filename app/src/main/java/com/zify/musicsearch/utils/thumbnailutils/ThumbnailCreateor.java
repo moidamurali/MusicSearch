@@ -1,6 +1,5 @@
 package com.zify.musicsearch.utils.thumbnailutils;
 
-import android.content.ContentResolver;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
