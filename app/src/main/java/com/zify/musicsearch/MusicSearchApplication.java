@@ -12,6 +12,10 @@ public class MusicSearchApplication extends Application {
 
     private static MusicSearchApplication instance;
 
+    private MusicSearchApplication(){
+
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
