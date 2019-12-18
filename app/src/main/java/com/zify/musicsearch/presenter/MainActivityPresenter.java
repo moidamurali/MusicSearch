@@ -24,10 +24,10 @@ import java.util.List;
 
 public class MainActivityPresenter implements MainActivityContract.Presenter {
 
-    private MainActivityContract.View mView;
+    private MainActivityContract.SearchView mView;
     private MainActivityContract.Model mModel;
 
-    public MainActivityPresenter(MainActivityContract.View view) {
+    public MainActivityPresenter(MainActivityContract.SearchView view) {
         mView = view;
         initPresenter();
     }
@@ -57,10 +57,10 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
         public static final int STATE_EMPTY=2;
         public static final int STATE_SHOW_ARTICLE=3;
         private final MainActivityContract.Presenter presenter;
-        private final MainActivityContract.View view;
+        private final MainActivityContract.SearchView view;
         private String endpointURL;
 
-        public LoadMusicData(String URL,MainActivityContract.Presenter presenter, MainActivityContract.View view){
+        public LoadMusicData(String URL,MainActivityContract.Presenter presenter, MainActivityContract.SearchView view){
             this.presenter = presenter;
             this.view=view;
             this.endpointURL=URL;

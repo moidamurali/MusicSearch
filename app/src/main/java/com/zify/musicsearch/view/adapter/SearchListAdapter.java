@@ -30,6 +30,7 @@ import com.zify.musicsearch.model.Artist;
 import com.zify.musicsearch.utils.thumbnailutils.BitmapCache;
 import com.zify.musicsearch.utils.thumbnailutils.ThumbnailCreateor;
 import com.zify.musicsearch.view.RecyclerItemClickListener;
+import com.zify.musicsearch.view.activities.DetailsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,15 +40,15 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Mu
     private List<Artist> dictionaryWords;
     private List<Artist> filteredList = new ArrayList<>();
     private Context mContext;
-    private RecyclerItemClickListener recyclerItemClickListener;
+    //private RecyclerItemClickListener recyclerItemClickListener;
     Bitmap mBitmap;
     private CustomFilter mFilter;
 
 
-    public SearchListAdapter(List<Artist> mArtistList, Context context, RecyclerItemClickListener recyclerItemClickListener) {
+    public SearchListAdapter(List<Artist> mArtistList, Context context/*, RecyclerItemClickListener recyclerItemClickListener*/) {
         this.mArtistList = mArtistList;
         this.mContext = context;
-        this.recyclerItemClickListener = recyclerItemClickListener;
+        //this.recyclerItemClickListener = recyclerItemClickListener;
         mFilter = new CustomFilter(SearchListAdapter.this);
         dictionaryWords = mArtistList;
         filteredList.addAll(dictionaryWords);
@@ -68,7 +69,7 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Mu
         final Artist mArtist = mArtistList.get(position);
 
         holder.artistName.setText(mArtist.getName());
-        String sourceString = "Currently Streaming:" + "\n \n" + mArtist.getUrl();
+        String sourceString = "Currently Streaming:" + "\n" + mArtist.getUrl();
         holder.currentStreaming.setText(Html.fromHtml(sourceString));
         clickURL(holder.currentStreaming, sourceString,mArtist.getUrl());
 
@@ -87,13 +88,12 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Mu
         }
 
 
-        holder.layoutParent.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.layoutParent.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
-
-              recyclerItemClickListener.onItemClick(mArtistList.get(position));
-
-                return true;
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, DetailsActivity.class);
+                intent.putExtra("artist_name",mArtist.getName());
+                mContext.startActivity(intent);
             }
         });
 

@@ -22,6 +22,17 @@ public interface MainActivityContract {
         void showProgress();
 
         void hideProgress();
+    }
+
+    interface SearchView extends View {
+
+        void initView();
+
+        void setViewData(String data);
+
+        void showProgress();
+
+        void hideProgress();
 
         void setDataToRecyclerView(List<Artist> noticeArrayList);
 

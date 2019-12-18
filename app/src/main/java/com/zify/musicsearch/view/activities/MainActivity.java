@@ -1,5 +1,6 @@
 package com.zify.musicsearch.view.activities;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,18 +24,19 @@ import com.zify.musicsearch.view.adapter.SearchListAdapter;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MainActivityContract.View {
+public class MainActivity extends AppCompatActivity implements MainActivityContract.SearchView {
 
     private EditText mSearcEditText;
     private RecyclerView mRecyclerView;
     private MainActivityContract.Presenter mPresenter;
-    private ProgressBar progressBar;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mPresenter = new MainActivityPresenter(this);
+        dialog = new ProgressDialog(this);
         mPresenter.fetchDataFromService();
         initProgressBar();
 
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
     @Override
     public void initView() {
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        //progressBar = (ProgressBar) findViewById(R.id.progress_bar);
         mSearcEditText = (EditText) findViewById(R.id.search_music_et);
         mRecyclerView = (RecyclerView) findViewById(R.id.data_recycler_view);
     }
@@ -53,36 +55,29 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
     /**
-     * Initializing progressbar programmatically
+     * Initializing progress dialog
      * */
     private void initProgressBar() {
-        progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyleLarge);
-        progressBar.setIndeterminate(true);
 
-        RelativeLayout relativeLayout = new RelativeLayout(this);
-        relativeLayout.setGravity(Gravity.CENTER);
-        relativeLayout.addView(progressBar);
-
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        progressBar.setVisibility(View.INVISIBLE);
-
-        this.addContentView(relativeLayout, params);
+        dialog.setMessage("Downloading data, please wait....");
     }
 
     @Override
     public void showProgress() {
-        progressBar.setVisibility(View.VISIBLE);
+        dialog.show();
     }
 
     @Override
     public void hideProgress() {
-        progressBar.setVisibility(View.GONE);
+        if (dialog.isShowing()) {
+            dialog.dismiss();
+        }
     }
 
     @Override
     public void setDataToRecyclerView(List<Artist> noticeArrayList) {
 
-        SearchListAdapter adapter = new SearchListAdapter(noticeArrayList, this , recyclerItemClickListener);
+        SearchListAdapter adapter = new SearchListAdapter(noticeArrayList, this /*, recyclerItemClickListener*/);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(adapter);
         searchFilterData(adapter);
@@ -96,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     /**
      * RecyclerItem click event listener
      * */
-    private RecyclerItemClickListener recyclerItemClickListener = new RecyclerItemClickListener() {
+/*    private RecyclerItemClickListener recyclerItemClickListener = new RecyclerItemClickListener() {
         @Override
         public void onItemClick(Artist mArtist) {
 
@@ -105,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
                     Toast.LENGTH_LONG).show();
 
         }
-    };
+    };*/
 
     private void searchFilterData(final SearchListAdapter adapter){
         mSearcEditText.addTextChangedListener(new TextWatcher() {
