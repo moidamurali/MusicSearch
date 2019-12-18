@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -16,6 +17,7 @@ import com.zify.musicsearch.contract.MainContract;
 import com.zify.musicsearch.model.Artist;
 import com.zify.musicsearch.presenter.MainPresenter;
 import com.zify.musicsearch.presenter.BasePresenter;
+import com.zify.musicsearch.utils.Constants;
 import com.zify.musicsearch.view.adapter.SearchListAdapter;
 
 import java.util.List;
@@ -32,15 +34,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.Sear
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mPresenter = new MainPresenter(this);
-        dialog = new ProgressDialog(this);
-        mPresenter.fetchDataFromService();
+
+        callFromServices();
         initProgressBar();
 
     }
 
     @Override
     public void initView() {
-        //progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        dialog = new ProgressDialog(this);
         mSearcEditText = (EditText) findViewById(R.id.search_music_et);
         mRecyclerView = (RecyclerView) findViewById(R.id.data_recycler_view);
     }
@@ -48,6 +51,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.Sear
     @Override
     public void setViewData(String data) {
         //mSearcEditText.setText(data);
+    }
+
+    public void callFromServices(){
+        if(Constants.checkConnection(this)) {
+            mPresenter.fetchDataFromService();
+        }else {
+            Toast.makeText(this,"No Internet Connection",Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
