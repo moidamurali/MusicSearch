@@ -49,12 +49,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.Sear
     }
 
 
-    public void callFromServices(){
-        if(Utils.checkConnection(this)) {
-            mPresenter.fetchDataFromService("");
-        }else {
-            Toast.makeText(this,"No Internet Connection",Toast.LENGTH_SHORT).show();
-        }
+    public void callFromServices() {
+        mPresenter.fetchDataFromService("");
     }
 
     /**

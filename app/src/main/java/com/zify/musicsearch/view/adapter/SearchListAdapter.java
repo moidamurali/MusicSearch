@@ -13,6 +13,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -75,9 +76,13 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Mu
         holder.layoutParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, DetailsActivity.class);
-                intent.putExtra("artist_name",mArtist.getName());
-                mContext.startActivity(intent);
+                if (Utils.checkConnection(mContext)) {
+                    Intent intent = new Intent(mContext, DetailsActivity.class);
+                    intent.putExtra("artist_name", mArtist.getName());
+                    mContext.startActivity(intent);
+                } else {
+                    Toast.makeText(mContext, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
