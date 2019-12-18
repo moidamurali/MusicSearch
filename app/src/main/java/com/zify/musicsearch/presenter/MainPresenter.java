@@ -9,7 +9,7 @@ import com.zify.musicsearch.contract.MainContract;
 import com.zify.musicsearch.model.Artist;
 import com.zify.musicsearch.model.ArtistSearchResponse;
 import com.zify.musicsearch.model.MainActivityModel;
-import com.zify.musicsearch.utils.Constants;
+import com.zify.musicsearch.utils.Utils;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -41,14 +41,13 @@ public class MainPresenter implements BasePresenter {
     @Override
     public void onClick(android.view.View view) {
         String data = mModel.getData();
-        mView.setViewData(null);
     }
 
     @Override
-    public void fetchDataFromService() {
+    public void fetchDataFromService(String artName) {
         //String url = "http://ws.audioscrobbler.com/2.0/?method=artist.search&artist=cher&api_key=fa2e62987b8c372e16daa60331164d12&format=json";
-        String url = Constants.ARTIST_SEARCH_ENDPINT_URL+"cher&api_key="+Constants.API_KEY + "&format=json";
-        boolean networkStatus = Constants.checkConnection(MusicSearchApplication.getAppContext());
+        String url = Utils.ARTIST_SEARCH_ENDPINT_URL+"cher&api_key="+ Utils.API_KEY + "&format=json";
+        boolean networkStatus = Utils.checkConnection(MusicSearchApplication.getAppContext());
         LoadMusicData mLoadMusicData = new LoadMusicData(url,this, mView, networkStatus);
         mLoadMusicData.execute();
     }
@@ -95,7 +94,7 @@ public class MainPresenter implements BasePresenter {
                         responseString = out.toString();
                         mArtistSearchResponse = gson.fromJson(out.toString(), ArtistSearchResponse.class);
                         Log.v("Response::::", responseString);
-                        Constants.writeToFile(MusicSearchApplication.getAppContext(), out.toString(),fileName);
+                        Utils.writeToFile(MusicSearchApplication.getAppContext(), out.toString(),fileName);
                         out.close();
                     } else{
                         //Closes the connection.
@@ -110,8 +109,8 @@ public class MainPresenter implements BasePresenter {
                     view.hideProgress();
                 }
             }else {
-                if(Constants.isFilePresent(MusicSearchApplication.getAppContext(),fileName)) {
-                    mArtistSearchResponse = gson.fromJson(Constants.readFromFile(MusicSearchApplication.getAppContext(),fileName),ArtistSearchResponse.class);
+                if(Utils.isFilePresent(MusicSearchApplication.getAppContext(),fileName)) {
+                    mArtistSearchResponse = gson.fromJson(Utils.readFromFile(MusicSearchApplication.getAppContext(),fileName),ArtistSearchResponse.class);
                 }
 
             }

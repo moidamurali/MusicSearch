@@ -3,16 +3,7 @@ package com.zify.musicsearch.view.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.net.Uri;
 import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextPaint;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
-import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.zify.musicsearch.R;
 import com.zify.musicsearch.model.Artist;
-import com.zify.musicsearch.utils.Constants;
+import com.zify.musicsearch.utils.Utils;
 import com.zify.musicsearch.utils.thumbnailutils.BitmapCache;
 import com.zify.musicsearch.utils.thumbnailutils.ThumbnailCreateor;
 import com.zify.musicsearch.view.activities.DetailsActivity;
@@ -40,22 +31,15 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Mu
     private List<Artist> dictionaryWords;
     private List<Artist> filteredList = new ArrayList<>();
     private Context mContext;
-    //private RecyclerItemClickListener recyclerItemClickListener;
-    Bitmap mBitmap;
     private CustomFilter mFilter;
 
 
-    public SearchListAdapter(List<Artist> mArtistList, Context context/*, RecyclerItemClickListener recyclerItemClickListener*/) {
+    public SearchListAdapter(List<Artist> mArtistList, Context context) {
         this.mArtistList = mArtistList;
         this.mContext = context;
-        //this.recyclerItemClickListener = recyclerItemClickListener;
         mFilter = new CustomFilter(SearchListAdapter.this);
         dictionaryWords = mArtistList;
         filteredList.addAll(dictionaryWords);
-
-        int w = 100, h = 100;
-        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-        mBitmap = Bitmap.createBitmap(w, h, conf);
     }
 
     @Override
@@ -71,7 +55,7 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Mu
         holder.artistName.setText(mArtist.getName());
         String sourceString = "Currently Streaming:" + "\n" + mArtist.getUrl();
         holder.currentStreaming.setText(Html.fromHtml(sourceString));
-        Constants.clickURL(mContext,holder.currentStreaming, sourceString,mArtist.getUrl(),20,true);
+        Utils.clickURL(mContext,holder.currentStreaming, sourceString,mArtist.getUrl(),20,true);
 
         if(mArtist.getImage().get(0).getText()!=null){
             Bitmap found = BitmapCache.GetInstance().GetBitmapFromMemoryCache(mArtist.getImage().get(0).getText());
@@ -80,7 +64,7 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Mu
             }else{
                 ThumbnailCreateor.BitmapWorkerTask task = new ThumbnailCreateor.BitmapWorkerTask(holder.artistImage,  mArtist.getImage().get(0).getText());
 
-                ThumbnailCreateor.AsyncDrawable downloadedDrawable = new ThumbnailCreateor.AsyncDrawable(mContext.getResources(), mBitmap ,task);
+                ThumbnailCreateor.AsyncDrawable downloadedDrawable = new ThumbnailCreateor.AsyncDrawable(mContext.getResources(), Utils.getResizedBitMap() ,task);
                 holder.artistImage.setImageDrawable(downloadedDrawable);
                 task.execute(String.valueOf(mArtist.getImage().get(0).getText()));
             }

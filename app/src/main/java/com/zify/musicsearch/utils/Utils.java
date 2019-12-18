@@ -2,6 +2,7 @@ package com.zify.musicsearch.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -26,7 +27,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-public class Constants {
+public class Utils {
 
     public static final String ARTIST_SEARCH_ENDPINT_URL = "http://ws.audioscrobbler.com/2.0/?method=artist.search&artist=";
     public static final String ARTIST_INFO_ENDPINT_URL = "http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=";
@@ -149,5 +150,11 @@ public class Constants {
         textView.setText(ss);
         textView.setMovementMethod(LinkMovementMethod.getInstance());
         textView.setHighlightColor(Color.TRANSPARENT);
+    }
+
+    public static Bitmap getResizedBitMap(){
+        int w = 100, h = 100;
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+        return Bitmap.createBitmap(w, h, conf);
     }
 }

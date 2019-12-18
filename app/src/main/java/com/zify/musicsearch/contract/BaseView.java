@@ -13,8 +13,6 @@ public interface BaseView {
 
     void initView();
 
-    void setViewData(ArtistDetails details);
-
     void showProgress();
 
     void hideProgress();

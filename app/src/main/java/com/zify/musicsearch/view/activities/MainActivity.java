@@ -15,10 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.zify.musicsearch.R;
 import com.zify.musicsearch.contract.MainContract;
 import com.zify.musicsearch.model.Artist;
-import com.zify.musicsearch.model.ArtistDetails;
-import com.zify.musicsearch.presenter.MainPresenter;
 import com.zify.musicsearch.presenter.BasePresenter;
-import com.zify.musicsearch.utils.Constants;
+import com.zify.musicsearch.presenter.MainPresenter;
+import com.zify.musicsearch.utils.Utils;
 import com.zify.musicsearch.view.adapter.SearchListAdapter;
 
 import java.util.List;
@@ -49,14 +48,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.Sear
         mRecyclerView = (RecyclerView) findViewById(R.id.data_recycler_view);
     }
 
-    @Override
-    public void setViewData(ArtistDetails data) {
-        //mSearcEditText.setText(data);
-    }
 
     public void callFromServices(){
-        if(Constants.checkConnection(this)) {
-            mPresenter.fetchDataFromService();
+        if(Utils.checkConnection(this)) {
+            mPresenter.fetchDataFromService("");
         }else {
             Toast.makeText(this,"No Internet Connection",Toast.LENGTH_SHORT).show();
         }

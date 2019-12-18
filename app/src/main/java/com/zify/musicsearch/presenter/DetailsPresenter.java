@@ -5,11 +5,11 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.zify.musicsearch.MusicSearchApplication;
-import com.zify.musicsearch.contract.BaseView;
+import com.zify.musicsearch.contract.DetailsView;
 import com.zify.musicsearch.contract.MainContract;
 import com.zify.musicsearch.model.ArtistDetails;
 import com.zify.musicsearch.model.MainActivityModel;
-import com.zify.musicsearch.utils.Constants;
+import com.zify.musicsearch.utils.Utils;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -26,10 +26,11 @@ import java.io.IOException;
 
 public class DetailsPresenter implements BasePresenter {
 
-    private static BaseView mView;
+    private static DetailsView mView;
     private MainContract.Model mModel;
+    String selectedArtist;
 
-    public DetailsPresenter(BaseView view) {
+    public DetailsPresenter(DetailsView view) {
         mView = view;
         initPresenter();
     }
@@ -42,12 +43,13 @@ public class DetailsPresenter implements BasePresenter {
     @Override
     public void onClick(android.view.View view) {
         String data = mModel.getData();
+        mView.setViewData(null);
     }
 
     @Override
-    public void fetchDataFromService() {
-        String url = Constants.ARTIST_INFO_ENDPINT_URL + "" +"&api_key="+Constants.API_KEY + "&format=json";
-        boolean networkStatus = Constants.checkConnection(MusicSearchApplication.getAppContext());
+    public void fetchDataFromService(String selectedArtist) {
+        String url = Utils.ARTIST_INFO_ENDPINT_URL + selectedArtist +"&api_key="+ Utils.API_KEY + "&format=json";
+        boolean networkStatus = Utils.checkConnection(MusicSearchApplication.getAppContext());
         LoadArtistDetails mLoadArtistDetails = new LoadArtistDetails(url,this, mView, networkStatus);
         mLoadArtistDetails.execute();
     }
@@ -58,12 +60,12 @@ public class DetailsPresenter implements BasePresenter {
         public static final int STATE_EMPTY=2;
         public static final int STATE_SHOW_ARTICLE=3;
         private final BasePresenter presenter;
-        private final BaseView view;
+        private final DetailsView view;
         private String endpointURL;
         boolean networkStatus;
         final String fileName = "UserInfo.json";
 
-        public LoadArtistDetails(String URL, BasePresenter presenter, BaseView view, boolean internetStatus){
+        public LoadArtistDetails(String URL, BasePresenter presenter, DetailsView view, boolean internetStatus){
             this.presenter = presenter;
             this.view=view;
             this.endpointURL=URL;
@@ -93,7 +95,7 @@ public class DetailsPresenter implements BasePresenter {
                         response.getEntity().writeTo(out);
                         responseString = out.toString();
                         Log.v("Response::::", responseString);
-                        Constants.writeToFile(MusicSearchApplication.getAppContext(), out.toString(),fileName);
+                        Utils.writeToFile(MusicSearchApplication.getAppContext(), out.toString(),fileName);
                         out.close();
                     } else{
                         //Closes the connection.
@@ -108,8 +110,8 @@ public class DetailsPresenter implements BasePresenter {
                     view.hideProgress();
                 }
             }else {
-                if(Constants.isFilePresent(MusicSearchApplication.getAppContext(),fileName)) {
-                    responseString = Constants.readFromFile(MusicSearchApplication.getAppContext(),fileName);
+                if(Utils.isFilePresent(MusicSearchApplication.getAppContext(),fileName)) {
+                    responseString = Utils.readFromFile(MusicSearchApplication.getAppContext(),fileName);
                 }
 
             }
