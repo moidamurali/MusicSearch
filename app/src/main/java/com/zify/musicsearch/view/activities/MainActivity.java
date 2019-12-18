@@ -4,11 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,19 +12,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.zify.musicsearch.R;
-import com.zify.musicsearch.contract.MainActivityContract;
+import com.zify.musicsearch.contract.MainContract;
 import com.zify.musicsearch.model.Artist;
 import com.zify.musicsearch.presenter.MainActivityPresenter;
-import com.zify.musicsearch.view.RecyclerItemClickListener;
+import com.zify.musicsearch.presenter.Presenter;
 import com.zify.musicsearch.view.adapter.SearchListAdapter;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MainActivityContract.SearchView {
+public class MainActivity extends AppCompatActivity implements MainContract.SearchView {
 
     private EditText mSearcEditText;
     private RecyclerView mRecyclerView;
-    private MainActivityContract.Presenter mPresenter;
+    private Presenter mPresenter;
     private ProgressDialog dialog;
 
     @Override

@@ -7,15 +7,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.zify.musicsearch.R;
-import com.zify.musicsearch.contract.MainActivityContract;
-import com.zify.musicsearch.model.Artist;
+import com.zify.musicsearch.contract.MainContract;
 
-import java.util.List;
-
-public class DetailsActivity  extends Activity implements MainActivityContract.View {
+public class DetailsActivity  extends Activity implements MainContract.View {
 
     private TextView artistName;
     private TextView artistSummary;

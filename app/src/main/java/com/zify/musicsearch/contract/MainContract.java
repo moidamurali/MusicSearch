@@ -3,10 +3,9 @@ package com.zify.musicsearch.contract;
 
 import com.zify.musicsearch.model.Artist;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public interface MainActivityContract {
+public interface MainContract {
 
     /**
      * showProgress() and hideProgress() would be used for displaying and hiding the progressBar
@@ -35,13 +34,6 @@ public interface MainActivityContract {
 
         String getData();
     }
-
-    interface Presenter {
-
-        void onClick(android.view.View view);
-        void fetchDataFromService();
-    }
-
 
 
 }

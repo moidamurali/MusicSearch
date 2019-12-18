@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.zify.musicsearch.MusicSearchApplication;
-import com.zify.musicsearch.contract.MainActivityContract;
+import com.zify.musicsearch.contract.MainContract;
 import com.zify.musicsearch.model.Artist;
 import com.zify.musicsearch.model.ArtistSearchResponse;
 import com.zify.musicsearch.model.MainActivityModel;
@@ -23,12 +23,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-public class MainActivityPresenter implements MainActivityContract.Presenter {
+public class MainActivityPresenter implements Presenter {
 
-    private static MainActivityContract.SearchView mView;
-    private MainActivityContract.Model mModel;
+    private static MainContract.SearchView mView;
+    private MainContract.Model mModel;
 
-    public MainActivityPresenter(MainActivityContract.SearchView view) {
+    public MainActivityPresenter(MainContract.SearchView view) {
         mView = view;
         initPresenter();
     }
@@ -58,13 +58,13 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
         public static final int STATE_LOADING=1;
         public static final int STATE_EMPTY=2;
         public static final int STATE_SHOW_ARTICLE=3;
-        private final MainActivityContract.Presenter presenter;
-        private final MainActivityContract.SearchView view;
+        private final Presenter presenter;
+        private final MainContract.SearchView view;
         private String endpointURL;
         boolean networkStatus;
         final String fileName = "SearchMusic.json";
 
-        public LoadMusicData(String URL,MainActivityContract.Presenter presenter, MainActivityContract.SearchView view, boolean internetStatus){
+        public LoadMusicData(String URL, Presenter presenter, MainContract.SearchView view, boolean internetStatus){
             this.presenter = presenter;
             this.view=view;
             this.endpointURL=URL;
