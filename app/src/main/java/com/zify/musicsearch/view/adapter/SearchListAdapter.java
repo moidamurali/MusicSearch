@@ -27,9 +27,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.zify.musicsearch.R;
 import com.zify.musicsearch.model.Artist;
+import com.zify.musicsearch.utils.Constants;
 import com.zify.musicsearch.utils.thumbnailutils.BitmapCache;
 import com.zify.musicsearch.utils.thumbnailutils.ThumbnailCreateor;
-import com.zify.musicsearch.view.RecyclerItemClickListener;
 import com.zify.musicsearch.view.activities.DetailsActivity;
 
 import java.util.ArrayList;
@@ -71,7 +71,7 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Mu
         holder.artistName.setText(mArtist.getName());
         String sourceString = "Currently Streaming:" + "\n" + mArtist.getUrl();
         holder.currentStreaming.setText(Html.fromHtml(sourceString));
-        clickURL(holder.currentStreaming, sourceString,mArtist.getUrl());
+        Constants.clickURL(mContext,holder.currentStreaming, sourceString,mArtist.getUrl(),20,true);
 
         if(mArtist.getImage().get(0).getText()!=null){
             Bitmap found = BitmapCache.GetInstance().GetBitmapFromMemoryCache(mArtist.getImage().get(0).getText());
@@ -162,29 +162,6 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Mu
         }
     }
 
-    private void clickURL(TextView textView, String value,final String url){
-        SpannableString ss = new SpannableString(value);
-        ClickableSpan clickableSpan = new ClickableSpan() {
-            @Override
-            public void onClick(View textView) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(url));
-                mContext.startActivity(intent);
-            }
-            @Override
-            public void updateDrawState(TextPaint ds) {
-                super.updateDrawState(ds);
-                ds.setUnderlineText(false);
-            }
-        };
-        StyleSpan bss = new StyleSpan(android.graphics.Typeface.BOLD);
-        ss.setSpan(clickableSpan, 22, value.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        ss.setSpan(bss, 0, 20, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 
-
-        textView.setText(ss);
-        textView.setMovementMethod(LinkMovementMethod.getInstance());
-        textView.setHighlightColor(Color.TRANSPARENT);
-    }
 
 }

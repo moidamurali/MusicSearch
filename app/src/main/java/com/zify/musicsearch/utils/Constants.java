@@ -1,9 +1,21 @@
 package com.zify.musicsearch.utils;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -109,5 +121,33 @@ public class Constants {
             }
         }
         return false;
+    }
+
+    public static void clickURL(final Context mContext,TextView textView, String value, final String url, int endSpan, boolean from){
+        SpannableString ss = new SpannableString(value);
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(View textView) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                mContext.startActivity(intent);
+            }
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setUnderlineText(false);
+            }
+        };
+
+        ss.setSpan(clickableSpan, endSpan, value.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if(from) {
+            StyleSpan bss = new StyleSpan(android.graphics.Typeface.BOLD);
+            ss.setSpan(bss, 0, endSpan, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        }
+
+
+        textView.setText(ss);
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
+        textView.setHighlightColor(Color.TRANSPARENT);
     }
 }

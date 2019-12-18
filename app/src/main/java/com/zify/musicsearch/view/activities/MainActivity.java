@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.zify.musicsearch.R;
 import com.zify.musicsearch.contract.MainContract;
 import com.zify.musicsearch.model.Artist;
+import com.zify.musicsearch.model.ArtistDetails;
 import com.zify.musicsearch.presenter.MainPresenter;
 import com.zify.musicsearch.presenter.BasePresenter;
 import com.zify.musicsearch.utils.Constants;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.Sear
     }
 
     @Override
-    public void setViewData(String data) {
+    public void setViewData(ArtistDetails data) {
         //mSearcEditText.setText(data);
     }
 
@@ -95,19 +96,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.Sear
         Toast.makeText(MainActivity.this, "Please try again after some time " + throwable.getMessage(), Toast.LENGTH_LONG).show();
     }
 
-    /**
-     * RecyclerItem click event listener
-     * */
-/*    private RecyclerItemClickListener recyclerItemClickListener = new RecyclerItemClickListener() {
-        @Override
-        public void onItemClick(Artist mArtist) {
-
-            Toast.makeText(MainActivity.this,
-                    "List title:  " + mArtist.getName(),
-                    Toast.LENGTH_LONG).show();
-
-        }
-    };*/
 
     private void searchFilterData(final SearchListAdapter adapter){
         mSearcEditText.addTextChangedListener(new TextWatcher() {
