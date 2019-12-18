@@ -64,9 +64,6 @@ public class DetailsPresenter implements BasePresenter {
 
 
     public static class LoadArtistDetails extends AsyncTask<ArtistDetails, Void, ArtistDetails> {
-        public static final int STATE_LOADING=1;
-        public static final int STATE_EMPTY=2;
-        public static final int STATE_SHOW_ARTICLE=3;
         private final BasePresenter presenter;
         private final DetailsView view;
         private String endpointURL;
