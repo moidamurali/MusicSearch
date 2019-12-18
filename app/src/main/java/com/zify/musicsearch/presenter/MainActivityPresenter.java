@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.zify.musicsearch.MusicSearchApplication;
 import com.zify.musicsearch.contract.MainActivityContract;
 import com.zify.musicsearch.model.Artist;
 import com.zify.musicsearch.model.ArtistSearchResponse;
@@ -24,7 +25,7 @@ import java.util.List;
 
 public class MainActivityPresenter implements MainActivityContract.Presenter {
 
-    private MainActivityContract.SearchView mView;
+    private static MainActivityContract.SearchView mView;
     private MainActivityContract.Model mModel;
 
     public MainActivityPresenter(MainActivityContract.SearchView view) {
@@ -47,7 +48,8 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
     public void fetchDataFromService() {
         //String url = "http://ws.audioscrobbler.com/2.0/?method=artist.search&artist=cher&api_key=fa2e62987b8c372e16daa60331164d12&format=json";
         String url = Constants.ARTIST_SEARCH_ENDPINT_URL+"cher&api_key="+Constants.API_KEY + "&format=json";
-        LoadMusicData mLoadMusicData = new LoadMusicData(url,this, mView);
+        boolean networkStatus = Constants.checkConnection(MusicSearchApplication.getAppContext());
+        LoadMusicData mLoadMusicData = new LoadMusicData(url,this, mView, networkStatus);
         mLoadMusicData.execute();
     }
 
@@ -59,11 +61,14 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
         private final MainActivityContract.Presenter presenter;
         private final MainActivityContract.SearchView view;
         private String endpointURL;
+        boolean networkStatus;
+        final String fileName = "SearchMusic.json";
 
-        public LoadMusicData(String URL,MainActivityContract.Presenter presenter, MainActivityContract.SearchView view){
+        public LoadMusicData(String URL,MainActivityContract.Presenter presenter, MainActivityContract.SearchView view, boolean internetStatus){
             this.presenter = presenter;
             this.view=view;
             this.endpointURL=URL;
+            this.networkStatus = internetStatus;
         }
 
         @Override
@@ -78,29 +83,39 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
             HttpResponse response;
             String responseString = null;
             ArtistSearchResponse mArtistSearchResponse = null;
-            try {
-                response = httpclient.execute(new HttpGet(endpointURL));
-                StatusLine statusLine = response.getStatusLine();
-                if(statusLine.getStatusCode() == HttpStatus.SC_OK){
-                    ByteArrayOutputStream out = new ByteArrayOutputStream();
-                    response.getEntity().writeTo(out);
-                    responseString = out.toString();
-                    Gson gson = new Gson();
-                    mArtistSearchResponse = gson.fromJson(out.toString(), ArtistSearchResponse.class);
-                    Log.v("Response::::", responseString);
-                    out.close();
-                } else{
-                    //Closes the connection.
-                    response.getEntity().getContent().close();
-                    throw new IOException(statusLine.getReasonPhrase());
+            StatusLine statusLine;
+            Gson gson = new Gson();
+            if(networkStatus){
+                try {
+                    response = httpclient.execute(new HttpGet(endpointURL));
+                    statusLine = response.getStatusLine();
+                    if(statusLine.getStatusCode() == HttpStatus.SC_OK){
+                        ByteArrayOutputStream out = new ByteArrayOutputStream();
+                        response.getEntity().writeTo(out);
+                        responseString = out.toString();
+                        mArtistSearchResponse = gson.fromJson(out.toString(), ArtistSearchResponse.class);
+                        Log.v("Response::::", responseString);
+                        Constants.writeToFile(MusicSearchApplication.getAppContext(), out.toString(),fileName);
+                        out.close();
+                    } else{
+                        //Closes the connection.
+                        response.getEntity().getContent().close();
+                        throw new IOException(statusLine.getReasonPhrase());
+                    }
+                } catch (ClientProtocolException e) {
+                    //TODO Handle problems..
+                    view.hideProgress();
+                } catch (IOException e) {
+                    //TODO Handle problems..
+                    view.hideProgress();
                 }
-            } catch (ClientProtocolException e) {
-                //TODO Handle problems..
-                view.hideProgress();
-            } catch (IOException e) {
-                //TODO Handle problems..
-                view.hideProgress();
+            }else {
+                if(Constants.isFilePresent(MusicSearchApplication.getAppContext(),fileName)) {
+                    mArtistSearchResponse = gson.fromJson(Constants.readFromFile(MusicSearchApplication.getAppContext(),fileName),ArtistSearchResponse.class);
+                }
+
             }
+
             return mArtistSearchResponse;
         }
 

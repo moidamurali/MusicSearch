@@ -26,14 +26,6 @@ public interface MainActivityContract {
 
     interface SearchView extends View {
 
-        void initView();
-
-        void setViewData(String data);
-
-        void showProgress();
-
-        void hideProgress();
-
         void setDataToRecyclerView(List<Artist> noticeArrayList);
 
         void onResponseFailure(Throwable throwable);
@@ -48,19 +40,6 @@ public interface MainActivityContract {
 
         void onClick(android.view.View view);
         void fetchDataFromService();
-    }
-
-    /**
-     * Intractors are classes built for fetching data from your database, web services, or any other data source.
-     **/
-    interface GetNoticeIntractor {
-
-        interface OnFinishedListener {
-            void onFinished(ArrayList<Artist> noticeArrayList);
-            void onFailure(Throwable t);
-        }
-
-        void getNoticeArrayList(OnFinishedListener onFinishedListener);
     }
 
 
