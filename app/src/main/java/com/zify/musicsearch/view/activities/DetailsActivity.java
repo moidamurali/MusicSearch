@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,7 +68,8 @@ public class DetailsActivity  extends Activity implements DetailsView {
     public void setViewData(ArtistDetails data) {
         artistName.setText(data.getArtistName());
         artistBioData.setText(data.getArtistBio());
-        artistSummary.setText(data.getArtistsummary());
+        Spanned htmlAsSpanned = Html.fromHtml(data.getArtistsummary());
+        artistSummary.setText(htmlAsSpanned);
 
 
         //For Setting the Image
